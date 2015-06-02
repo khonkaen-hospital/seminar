@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use backend\models\Room;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Room */
 /* @var $form yii\widgets\ActiveForm */
@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'room_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->dropDownList([ '0', '1', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'status')->radioList(Room::getItemAlies('status'), ['prompt' => '']) ?>
 
 
 </div>

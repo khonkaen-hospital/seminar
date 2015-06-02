@@ -36,7 +36,8 @@ use yii\bootstrap\Nav;
                 'encodeLabels' => false,
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
-                    ['label' => '<span class="fa fa-file-code-o"></span> ตั้งค่างานประชุม', 'url' => ['/seminar/index']],
+
+                    ['label' => '<i class="fa fa-circle-o text-green"></i> ตั้งค่างานประชุม', 'url' => ['/seminar/index']],
                     ['label' => '<span class="fa fa-file-code-o"></span> ตารางประชม', 'url' => ['/schedule/index']],
                     ['label' => '<span class="fa fa-file-code-o"></span> ห้องประชุม', 'url' => ['/room/index']],
                     ['label' => '<span class="fa fa-file-code-o"></span> งานวิจัย', 'url' => ['/research/index']],

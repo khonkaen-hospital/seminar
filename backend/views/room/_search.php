@@ -21,7 +21,7 @@ use yii\bootstrap\ActiveForm;
     'inputTemplate' => '<div class="input-group">{input}
             <span class="input-group-btn">
             <button type="submit" class="btn btn-default" type="button"><i class="fa fa-search"></i> Search </button>
-            '.Html::a('<i class="glyphicon glyphicon-plus"> </i> Create', ['create'], ['data-pjax'=>'0','class' => 'btn btn-default']).'
+            '.Html::a('<i class="glyphicon glyphicon-plus"> </i> Create', ['create','seminar_id'=>$model->seminar_id], ['data-pjax'=>'0','class' => 'btn btn-default']).'
             </span>
             </div>',
     ])->textInput(['placeholder'=>'ค้นหา...'])

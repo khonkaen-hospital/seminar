@@ -21,7 +21,7 @@ class ScheduleSearch extends Schedule
     {
         return [
             [['id', 'room_id', 'create_time', 'update_time'], 'integer'],
-            [['start_date', 'end_date', 'topic', 'detail', 'status', 'type','q'], 'safe'],
+            [['start_date', 'end_date', 'topic', 'detail', 'status', 'type','q','seminar_id','startDate'], 'safe'],
         ];
     }
 
@@ -47,7 +47,15 @@ class ScheduleSearch extends Schedule
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=>[
+                'defaultOrder'=>['startDate'=>SORT_ASC]
+            ]
         ]);
+
+         $dataProvider->sort->attributes['startDate'] = [
+            'asc' => ['start_date' => SORT_ASC],
+            'desc' => ['start_date' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -64,6 +72,7 @@ class ScheduleSearch extends Schedule
             'room_id' => $this->room_id,
             'create_time' => $this->create_time,
             'update_time' => $this->update_time,
+            'seminar_id' =>$this->seminar_id
         ]);
 
         $query->orFilterWhere(['like', 'topic', $this->q])

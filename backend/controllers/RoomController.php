@@ -14,6 +14,8 @@ use yii\filters\VerbFilter;
  */
 class RoomController extends Controller
 {
+ 
+
     public function behaviors()
     {
         return [
@@ -30,9 +32,10 @@ class RoomController extends Controller
      * Lists all Room models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($seminar_id)
     {
         $searchModel = new RoomSearch();
+        $searchModel->seminar_id = Room::STATUS_ACTIVE;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -58,12 +61,16 @@ class RoomController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($seminar_id)
     {
-        $model = new Room();
+        $model = Yii::createObject([
+            'class'=>Room::className(),
+            'seminar_id'=> $seminar_id,
+            'status'=> 1
+        ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'seminar_id' => $model->seminar_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -82,7 +89,7 @@ class RoomController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+             return $this->redirect(['index', 'seminar_id' => $model->seminar_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,

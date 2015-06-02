@@ -15,6 +15,11 @@ class ScheduleQuery extends \yii\db\ActiveQuery
         return $this;
     }*/
 
+    public function bySeminar($id){
+        $this->andWhere('seminar_id = :seminar_id',[':seminar_id'=>$id]);
+        return $this;
+    }
+
     /**
      * @inheritdoc
      * @return Schedule[]|array

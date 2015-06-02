@@ -118,4 +118,11 @@ class SeminarController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionSettings($id){
+
+        return $this->render('settings',[
+            'model'=>$this->findModel($id)
+        ]);
+    }
 }

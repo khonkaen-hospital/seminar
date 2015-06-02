@@ -26,13 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
             'id',
             'title',
-            'description:ntext',
+           
             'venue',
-            'start_date',
+            'date',
             // 'end_date',
             // 'poster',
             // 'logo',
@@ -49,7 +49,13 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'user_id',
             // 'ref',
             // 'active',
-
+            [
+                'header'=>'ตั้งค่า',
+                'format'=>'raw',
+                'value'=>function($model){
+                    return Html::a('ตั้งค่า',['/seminar/settings','id'=>$model->id],['data-pjax'=>'0','class'=>'btn btn-sm btn-default btn-block']);
+                }
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header'=>'Actions',

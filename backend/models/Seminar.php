@@ -80,6 +80,8 @@ class Seminar extends \yii\db\ActiveRecord
             'user_id' => Yii::t('app', 'ผู้บันทึก'),
             'ref' => Yii::t('app', 'referent สำหรับ อัพโหลด'),
             'active' => Yii::t('app', 'Active'),
+            'date' => Yii::t('app', 'วันที'),
+
         ];
     }
 
@@ -90,5 +92,17 @@ class Seminar extends \yii\db\ActiveRecord
     public static function find()
     {
         return new SeminarQuery(get_called_class());
+    }
+
+    public function getDate(){
+        $startMonth = date('Y-m',strtotime($this->start_date));
+        $endMonth   = date('Y-m',strtotime($this->end_date));
+
+        if($startMonth === $endMonth){
+            return Yii::$app->formatter->asDate($this->start_date,'php:d'). ' - ' . Yii::$app->formatter->asDateTime($this->end_date,'php:d F Y');
+        }else{
+            return Yii::$app->formatter->asDate($this->start_date). ' - ' . Yii::$app->formatter->asDate($this->end_date);
+        }
+        
     }
 }

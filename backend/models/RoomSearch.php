@@ -21,6 +21,7 @@ class RoomSearch extends Room
     {
         return [
             [['id'], 'integer'],
+            [['seminar_id'],'integer'],
             [['room_name', 'status'], 'safe'],
         ];
     }
@@ -59,6 +60,7 @@ class RoomSearch extends Room
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'seminar_id' => $this->seminar_id,
         ]);
 
         $query->andFilterWhere(['like', 'room_name', $this->room_name])
