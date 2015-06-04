@@ -39,8 +39,8 @@ class ResearchType extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'status' => Yii::t('app', 'Status'),
+            'name' => Yii::t('app', 'ชื่อประเภท'),
+            'status' => Yii::t('app', 'เปิดใช้งาน'),
         ];
     }
 

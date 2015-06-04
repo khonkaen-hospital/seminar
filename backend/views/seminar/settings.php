@@ -23,24 +23,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div><!-- /.box-header -->
                 <div class="box-body ">
                   <div class="mailbox-read-info">
-                 	 <h3><?=$model->date; ?> </h3>
+                 	  <h3><?=$model->date; ?> </h3>
                     <h4><?=$model->venue; ?></h4>
                     <h5>
                     <span class="mailbox-read-time pull-right">แก้ไขล่าสุด : <?=$model->update_date; ?></span></h5>
                   </div>
-<br>
+             <br>
              
-                <div class="row">
+              <div class="row">
              	<div class="col-md-3">
-             		<?= Html::a('<i class="fa fa-edit"></i> ตารางการประชุม',['/schedule/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
+             		<?= Html::a('<i class="fa fa-edit"></i> กำหนดการ',['/schedule/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
              		?>
                 </div>
              	<div class="col-md-3">
-             		<?= Html::a('<i class="fa fa-edit"></i> งานวิจัย',['/schedule/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
+             		<?= Html::a('<i class="fa fa-edit"></i> ตารางการนำเสนอ',['/research/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
              		?>
                 </div>
              	<div class="col-md-3">
-             		<?= Html::a('<i class="fa fa-edit"></i> ประเภทงานวิจัย',['/schedule/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
+             		<?= Html::a('<i class="fa fa-edit"></i> ประเภทงานวิจัย',['/research-type/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
              		?>
                 </div> 
                 <div class="col-md-3">
@@ -50,10 +50,4 @@ $this->params['breadcrumbs'][] = $this->title;
              </div>  
    
                 </div>
-               
-                <div class="box-footer">
-                  
-                  <button class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</button>
-                  <button class="btn btn-default"><i class="fa fa-print"></i> Print</button>
-                </div><!-- /.box-footer -->
 </div>

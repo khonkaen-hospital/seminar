@@ -21,7 +21,7 @@ class ResearchSearch extends Research
     {
         return [
             [['id', 'research_type'], 'integer'],
-            [['number', 'topic', 'present_by', 'position', 'office', 'province_code'], 'safe'],
+            [['number', 'topic', 'present_by', 'position', 'office', 'province_code','q'], 'safe'],
         ];
     }
 
@@ -44,10 +44,32 @@ class ResearchSearch extends Research
     public function search($params)
     {
         $query = Research::find();
+        $query->joinWith(['room']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=>[
+                'pageSize'=>100
+            ],
+            'sort'=>[
+                'defaultOrder'=>['roomName'=>SORT_ASC,'startDate'=>SORT_ASC]
+            ]
         ]);
+
+        $dataProvider->sort->attributes['roomName'] = [
+            'asc' => ['lib_room.room_name' => SORT_ASC],
+            'desc' => ['lib_room.room_name' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['startDate'] = [
+            'asc' => ['start_date' => SORT_ASC],
+            'desc' => ['start_date' => SORT_DESC],
+        ];
+
+         $dataProvider->sort->attributes['time'] = [
+            'asc' => ['start_date' => SORT_ASC],
+            'desc' => ['start_date' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -63,7 +85,7 @@ class ResearchSearch extends Research
         ]);
 
         $query->andFilterWhere(['like', 'number', $this->number])
-            ->andFilterWhere(['like', 'topic', $this->topic])
+            ->andFilterWhere(['like', 'topic', $this->q])
             ->andFilterWhere(['like', 'present_by', $this->present_by])
             ->andFilterWhere(['like', 'position', $this->position])
             ->andFilterWhere(['like', 'office', $this->office])

@@ -61,7 +61,7 @@ class Schedule extends \yii\db\ActiveRecord
             'end_date' => Yii::t('app', 'เวลาสิ้นสุด'),
             'topic' => Yii::t('app', 'ชื่อเรื่อง'),
             'detail' => Yii::t('app', 'รายละเอียด'),
-            'status' => Yii::t('app', 'สถานะ'),
+            'status' => Yii::t('app', 'เปิดใช้งาน'),
             'room_id' => Yii::t('app', 'ห้องประชุม'),
             'type' => Yii::t('app', 'Type'),
             'create_time' => Yii::t('app', 'Create Time'),

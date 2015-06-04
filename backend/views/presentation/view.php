@@ -4,10 +4,10 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResearchType */
+/* @var $model backend\models\Schedule */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Research Types'), 'url' => ['index','seminar_id'=>$model->seminar_id]];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Schedules'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -30,15 +30,24 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="patient-view">
 
 
-<div class="research-type-view">
+<div class="schedule-view">
 
     <?= DetailView::widget([
         'model' => $model,
         'template'=>'<tr><th style="width:180px;">{label}</th><td>{value}</td></tr>',
         'attributes' => [
             'id',
-            'name',
+            'start_date',
+            'end_date',
+            'topic:ntext',
+            'detail:ntext',
             'status',
+            'room_id',
+            'type',
+            'create_time:datetime',
+            'update_time:datetime',
+            'seminar_id',
+            'narrator',
         ],
     ]) ?>
 

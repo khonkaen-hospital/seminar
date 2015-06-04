@@ -20,6 +20,18 @@ class ScheduleQuery extends \yii\db\ActiveQuery
         return $this;
     }
 
+    public function schedule()
+    {
+        $this->andWhere('[[type]]="schedule"');
+        return $this;
+    }
+    
+    public function presentation()
+    {
+        $this->andWhere('[[type]]="presentation"');
+        return $this;
+    }
+
     /**
      * @inheritdoc
      * @return Schedule[]|array

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model backend\models\Research */
 
 $this->title = Yii::t('app', 'เพิ่มงานวิจัย');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Researches'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Researches'), 'url' => ['index','seminar_id'=>$seminar_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="box box-primary">

@@ -3,11 +3,14 @@
 namespace backend\models;
 
 use Yii;
+use backend\models\ResearchType;
+use backend\models\Province;
 
 /**
  * This is the model class for table "{{%research}}".
  *
  * @property integer $id
+ * @property integer $seminar_id
  * @property string $number
  * @property string $topic
  * @property string $present_by
@@ -15,8 +18,13 @@ use Yii;
  * @property string $office
  * @property string $province_code
  * @property integer $research_type
- *
- * @property ResearchType $researchType
+ * @property string $researcher 
+ * @property string $start_date
+ * @property string $end_date
+ * @property integer $room_id
+ * 
+ * @property LibResearchType $researchType
+ * @property Seminar $seminar
  */
 class Research extends \yii\db\ActiveRecord
 {
@@ -34,10 +42,11 @@ class Research extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['number','topic','position','office','present_by','position','province_code','research_type'],'required'],
-            [['research_type'], 'integer'],
+            [['start_date', 'end_date','topic','number'],'required'],
+            [['seminar_id', 'research_type','room_id'], 'integer'],
+            [['start_date', 'end_date','seminar_id','room_id'], 'safe'],
             [['number'], 'string', 'max' => 10],
-            [['topic', 'present_by'], 'string', 'max' => 255],
+            [['topic', 'present_by','researcher'], 'string', 'max' => 255],
             [['position', 'office'], 'string', 'max' => 150],
             [['province_code'], 'string', 'max' => 2]
         ];
@@ -50,14 +59,35 @@ class Research extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'start_date' => Yii::t('app', 'เวลาเริ่ม'),
+            'end_date' => Yii::t('app', 'เวลาสิ้นสุด'),
+            'seminar_id' => Yii::t('app', 'Seminar ID'),
             'number' => Yii::t('app', 'รหัสผลงาน'),
             'topic' => Yii::t('app', 'ชื่อเรื่อง'),
-            'present_by' => Yii::t('app', 'ชื่อนักวิจัย'),
+            'present_by' => Yii::t('app', 'ผู้นำเสนอ'),
             'position' => Yii::t('app', 'ตำแหน่ง'),
             'office' => Yii::t('app', 'หน่วยงาน'),
+            'researcher' => Yii::t('app', 'นักวิจัย'),
             'province_code' => Yii::t('app', 'จังหวัด'),
             'research_type' => Yii::t('app', 'ประเภทงานวิจัย'),
+            'room_id' => Yii::t('app', 'ห้องประชุม'),
+            'provinceName' => Yii::t('app', 'จังหวัด'),
+            'researchTypeName' => Yii::t('app', 'ประเภทงานวิจัย'),
         ];
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProvince()
+    {
+        return @$this->hasOne(Province::className(), ['PROVINCE_CODE' => 'province_code']);
+    }
+
+    public function getProvinceName()
+    {
+        return @$this->province->PROVINCE_NAME;
     }
 
     /**
@@ -65,7 +95,32 @@ class Research extends \yii\db\ActiveRecord
      */
     public function getResearchType()
     {
-        return $this->hasOne(ResearchType::className(), ['id' => 'research_type']);
+        return @$this->hasOne(ResearchType::className(), ['id' => 'research_type']);
+    }
+
+    public function getResearchTypeName()
+    {
+        return @$this->researchType->name;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSeminar()
+    {
+        return $this->hasOne(Seminar::className(), ['id' => 'seminar_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRoom()
+    {
+        return $this->hasOne(Room::className(), ['id' => 'room_id']);
+    }
+
+    public function getRoomName(){
+        return @$this->room->room_name;
     }
 
     /**
@@ -75,5 +130,39 @@ class Research extends \yii\db\ActiveRecord
     public static function find()
     {
         return new ResearchQuery(get_called_class());
+    }
+
+        public function getTime(){
+        $startMonth = date('Y-m',strtotime($this->start_date));
+        $endMonth   = date('Y-m',strtotime($this->end_date));
+        return Yii::$app->formatter->asDateTime($this->start_date.' '.Yii::$app->timeZone,'php:H:i').' - '.Yii::$app->formatter->asDateTime($this->end_date.' '.Yii::$app->timeZone,'php:H:i');
+    }
+
+    public function getDate(){
+        $startMonth = date('Y-m',strtotime($this->start_date));
+        $endMonth   = date('Y-m',strtotime($this->end_date));
+        $startDay = date('Y-m-d',strtotime($this->start_date));
+        $endDay   = date('Y-m-d',strtotime($this->end_date));
+
+        if($startMonth === $endMonth){
+            if( $startDay == $endDay){
+                return Yii::$app->formatter->asDateTime($this->start_date.' '.Yii::$app->timeZone,'php:d F Y');
+            }else{
+               return Yii::$app->formatter->asDate($this->start_date.' '.Yii::$app->timeZone,'php:d'). ' - ' . Yii::$app->formatter->asDateTime($this->end_date.' '.Yii::$app->timeZone,'php:d F Y'); 
+            }
+        }else{
+            return Yii::$app->formatter->asDate($this->start_date.' '.Yii::$app->timeZone). ' - ' . Yii::$app->formatter->asDate($this->end_date.' '.Yii::$app->timeZone);
+        }  
+    }
+    public function getDateTime(){ 
+            return $this->getDate().' '.$this->getTime();
+    }
+
+    public function getStartDate(){
+        return Yii::$app->formatter->asDate($this->start_date);
+    }
+
+    public function getEndDate(){
+        return Yii::$app->formatter->asDate($this->end_date,' '.Yii::$app->timeZone);
     }
 }

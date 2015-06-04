@@ -4,17 +4,15 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Schedule;
-use backend\models\Room;
 use backend\models\ScheduleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
 
 /**
- * ScheduleController implements the CRUD actions for Schedule model.
+ * PresentationController implements the CRUD actions for Schedule model.
  */
-class ScheduleController extends Controller
+class PresentationController extends Controller
 {
     public function behaviors()
     {
@@ -37,6 +35,7 @@ class ScheduleController extends Controller
         return $this->renderIndex($seminar_id);
     }
 
+
     /**
      * Displays a single Schedule model.
      * @param integer $id
@@ -54,25 +53,12 @@ class ScheduleController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    // public function actionCreate()
-    // {
-    //     $model = new Schedule();
-
-    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-    //         return $this->redirect(['view', 'id' => $model->id]);
-    //     } else {
-    //         return $this->render('create', [
-    //             'model' => $model,
-    //         ]);
-    //     }
-    // }
-
     public function actionCreate($seminar_id)
     {
         $model = Yii::createObject([
             'class'  => Schedule::className(),
             'status' => Schedule::STATUS_ACTIVE,
-            'type'   => Schedule::TYPE_SCHEDULE,
+            'type'   => Schedule::TYPE_PRESENTATION,
             'seminar_id' => $seminar_id
         ]);
 
@@ -101,7 +87,7 @@ class ScheduleController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'seminar_id' => $model->seminar_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -117,11 +103,9 @@ class ScheduleController extends Controller
      */
     public function actionDelete($id)
     {
-        $model       = $this->findModel($id);
-        $seminar_id  = $model->seminar_id;
-        $model->delete();
+        $this->findModel($id)->delete();
 
-        return $this->redirect(['index','seminar_id'=>$seminar_id]);
+        return $this->redirect(['index']);
     }
 
     /**
@@ -140,38 +124,15 @@ class ScheduleController extends Controller
         }
     }
 
-    public function actionPreview($type,$seminar_id){
-        $this->layout ='main-login';
-        $model= Schedule::find()->bySeminar($seminar_id)->all();
-
-        return $this->render('preview',[
-            'model'=>$model,
-            'rooms'=>Room::find()->all()
-        ]);
-    }
-
-    public function actionCopy($seminar_id,$id){
-
-        $copy = $this->findModel($id);
-        $model = new Schedule;
-        $model->attributes = $copy->attributes;
-        $model->save();
-
-        $this->renderIndex($seminar_id);
-        
-    }
-
     public function renderIndex($seminar_id){
 
         $searchModel = new ScheduleSearch();
         $searchModel->seminar_id = $seminar_id;
-        $dataProvider = $searchModel->schedule()->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->presentation()->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-
-
 }

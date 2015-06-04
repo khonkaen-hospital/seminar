@@ -4,10 +4,10 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResearchType */
+/* @var $model backend\models\Schedule */
 
-$this->title = Yii::t('app', 'Create Research Type');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Research Types'), 'url' => ['index','seminar_id'=>$model->seminar_id]];
+$this->title = Yii::t('app', 'Create Schedule');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Schedules'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="box box-primary">

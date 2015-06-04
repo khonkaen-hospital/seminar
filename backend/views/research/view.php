@@ -7,8 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\models\Research */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Researches'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Researches'), 'url' => ['index','seminar_id'=>$model->seminar_id]];
 ?>
 
 <div class="box box-primary">
@@ -39,11 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'number',
             'topic',
+            'researcher',
             'present_by',
             'position',
             'office',
-            'province_code',
-            'research_type',
+            'provinceName',
+            'researchTypeName',
         ],
     ]) ?>
 

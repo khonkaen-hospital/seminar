@@ -30,15 +30,9 @@ class ResearchController extends Controller
      * Lists all Research models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($seminar_id)
     {
-        $searchModel = new ResearchSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+         return $this->renderIndex($seminar_id);
     }
 
     /**
@@ -58,15 +52,19 @@ class ResearchController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($seminar_id)
     {
-        $model = new Research();
+        $model = Yii::createObject([
+            'class'  => Research::className(),
+            'seminar_id' => $seminar_id
+        ]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'seminar_id' => $model->seminar_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'seminar_id'=>$seminar_id
             ]);
         }
     }
@@ -82,7 +80,7 @@ class ResearchController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'seminar_id' => $model->seminar_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -98,9 +96,11 @@ class ResearchController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $seminar_id = $model->seminar_id;
+        $model->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index','seminar_id'=>$seminar_id]);
     }
 
     /**
@@ -118,8 +118,27 @@ class ResearchController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    public function actionCopy($seminar_id,$id){
 
-    public function actionPreview(){
+        $copy = $this->findModel($id);
+        $model = new Research;
+        $model->attributes = $copy->attributes;
+        $model->save();
 
+        $this->renderIndex($seminar_id);
+        
+    }
+
+    public function renderIndex($seminar_id){
+
+        $searchModel = new ResearchSearch();
+        $searchModel->seminar_id = $seminar_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'seminar_id'=>$seminar_id
+        ]);
     }
 }

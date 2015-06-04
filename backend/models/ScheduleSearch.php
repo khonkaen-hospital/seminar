@@ -14,6 +14,8 @@ class ScheduleSearch extends Schedule
 {
     public $q;
 
+    public $query = null;
+
     /**
      * @inheritdoc
      */
@@ -34,6 +36,18 @@ class ScheduleSearch extends Schedule
         return Model::scenarios();
     }
 
+    public function presentation()
+    {
+        $this->query = Schedule::find()->presentation();
+        return $this;
+    }
+
+    public function schedule()
+    {
+        $this->query = Schedule::find()->schedule();
+        return $this;
+    }
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -43,10 +57,13 @@ class ScheduleSearch extends Schedule
      */
     public function search($params)
     {
-        $query = Schedule::find();
+        $query = $this->query===null?Schedule::find()->schedule():$this->query;
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=>[
+                'pageSize'=>50
+            ],
             'sort'=>[
                 'defaultOrder'=>['startDate'=>SORT_ASC]
             ]

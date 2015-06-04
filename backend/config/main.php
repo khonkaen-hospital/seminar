@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'language'=>'th',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
@@ -16,7 +17,7 @@ return [
         'view' => [
              'theme' => [
                  'pathMap' => [
-                    '@app/views' => '@backend/themes/adminlte'
+                    '@app/views' => '@backend/themes/yii2-app'
                  ],
              ],
         ],

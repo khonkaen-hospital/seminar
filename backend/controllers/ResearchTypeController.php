@@ -30,9 +30,11 @@ class ResearchTypeController extends Controller
      * Lists all ResearchType models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($seminar_id)
     {
         $searchModel = new ResearchTypeSearch();
+        $searchModel->seminar_id = $seminar_id;
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -58,12 +60,16 @@ class ResearchTypeController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($seminar_id)
     {
-        $model = new ResearchType();
+        $model = Yii::createObject([
+            'class'  => ResearchType::className(),
+            'seminar_id' => $seminar_id
+        ]);
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+             return $this->redirect(['index', 'seminar_id' => $model->seminar_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -82,7 +88,7 @@ class ResearchTypeController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'seminar_id' => $model->seminar_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -98,9 +104,11 @@ class ResearchTypeController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $seminar_id = $model->seminar_id;
+        $model->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index','seminar_id'=>$seminar_id]);
     }
 
     /**

@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-body">
 <div class="research-type-index">
 <?php Pjax::begin(); ?>  
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel,'seminar_id'=>$searchModel->seminar_id]); ?>
 
   
     <?= GridView::widget([
@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'status',
 
             [
                 'class' => 'yii\grid\ActionColumn',

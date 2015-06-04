@@ -13,7 +13,7 @@ use dosamigos\grid\GroupGridView;
 /* @var $searchModel backend\models\ScheduleSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'กำหนดการ');
+$this->title = Yii::t('app', 'ตารางนำเสนอ');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="box box-primary">

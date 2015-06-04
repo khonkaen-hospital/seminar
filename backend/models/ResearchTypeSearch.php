@@ -21,7 +21,7 @@ class ResearchTypeSearch extends ResearchType
     {
         return [
             [['id'], 'integer'],
-            [['name', 'status'], 'safe'],
+            [['name', 'status','seminar_id'], 'safe'],
         ];
     }
 
@@ -59,9 +59,10 @@ class ResearchTypeSearch extends ResearchType
 
         $query->andFilterWhere([
             'id' => $this->id,
+             'seminar_id' => $this->seminar_id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'name', $this->q])
             ->andFilterWhere(['like', 'status', $this->status]);
 
         //$query->orFilterWhere(['like', 'patient.name', $this->q])
