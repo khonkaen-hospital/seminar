@@ -140,13 +140,14 @@ class ScheduleController extends Controller
         }
     }
 
-    public function actionPreview($type,$seminar_id){
+    public function actionPreview($seminar_id,$date=null){
+
         $this->layout ='main-login';
-        $model= Schedule::find()->bySeminar($seminar_id)->all();
+        $model= Schedule::find()->bySeminar($seminar_id)->byDate($date)->all();
 
         return $this->render('preview',[
-            'model'=>$model,
-            'rooms'=>Room::find()->all()
+            'model' => $model,
+            'rooms' => Room::find()->all()
         ]);
     }
 
@@ -156,7 +157,6 @@ class ScheduleController extends Controller
         $model = new Schedule;
         $model->attributes = $copy->attributes;
         $model->save();
-
         $this->renderIndex($seminar_id);
         
     }

@@ -19,6 +19,14 @@ class ScheduleQuery extends \yii\db\ActiveQuery
         $this->andWhere('seminar_id = :seminar_id',[':seminar_id'=>$id]);
         return $this;
     }
+    public function byDate($date=null){
+        if($date===null){
+            $date = date('Y-m-d');
+        }
+
+        $this->andWhere('DATE_FORMAT(start_date,"%Y-%m-%d")= :start_date',[':start_date'=>$date]);
+        return $this;
+    }
 
     public function schedule()
     {

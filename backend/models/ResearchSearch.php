@@ -49,7 +49,7 @@ class ResearchSearch extends Research
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination'=>[
-                'pageSize'=>100
+                'pageSize'=>200
             ],
             'sort'=>[
                 'defaultOrder'=>['roomName'=>SORT_ASC,'startDate'=>SORT_ASC]

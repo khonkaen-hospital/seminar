@@ -125,6 +125,7 @@ class ResearchController extends Controller
         $model->attributes = $copy->attributes;
         $model->save();
 
+        //$this->redirect(['index','seminar_id'=>$seminar_id]);
         $this->renderIndex($seminar_id);
         
     }

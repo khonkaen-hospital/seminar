@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\bootstrap\ButtonDropdown;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\SeminarSearch */
@@ -32,7 +34,19 @@ $this->params['breadcrumbs'][] = $this->title;
              
               <div class="row">
              	<div class="col-md-3">
-             		<?= Html::a('<i class="fa fa-edit"></i> กำหนดการ',['/schedule/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
+              <?=  ButtonDropdown::widget([
+                  'options'=>['class'=>'btn btn-default btn-lg btn-block'],
+                  'label' => '<i class="fa fa-edit"></i> ข้อมูลกำหนดการ',
+                  'encodeLabel'=>false,
+                  'dropdown' => [
+                      'items' => ArrayHelper::merge([
+                          ['label' => 'จัดการข้อมูล', 'url' => ['/schedule/index','seminar_id'=>$model->id]],
+                          ['label' => 'แสดงหน้าจอทีวี ( Automatic )', 'url' =>  ['/schedule/preview','seminar_id'=>$model->id]]
+                      ],$scheduleMenus),
+                  ],
+              ]);;?>
+
+             		<?php Html::a('<i class="fa fa-edit"></i> กำหนดการ',['/schedule/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
              		?>
                 </div>
              	<div class="col-md-3">

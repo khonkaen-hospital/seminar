@@ -4,10 +4,12 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Seminar;
+use backend\models\Schedule;
 use backend\models\SeminarSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 
 /**
  * SeminarController implements the CRUD actions for Seminar model.
@@ -121,8 +123,23 @@ class SeminarController extends Controller
 
     public function actionSettings($id){
 
+        $model = $this->findModel($id);
+
+        $scheduleMenus = $this->createUrlPreviewSchedule($model->id);
+
         return $this->render('settings',[
-            'model'=>$this->findModel($id)
+            'model'=>$model,
+            'scheduleMenus'=>$scheduleMenus
         ]);
+    }
+
+    public function createUrlPreviewSchedule($seminar_id){
+        $schedules = Schedule::find()->bySeminar($seminar_id)->groupBy('date(start_date)')->all();
+
+        $scheduleMenus = [];
+        foreach ($schedules as $schedule) {
+           $scheduleMenus[] = ['label' => 'แสดงหน้าจอทีวี ( '.$schedule->date.' )', 'url' =>  ['/schedule/preview','seminar_id'=>$schedule->seminar_id,'date'=>date('Y-m-d',strtotime($schedule->start_date))]];
+        }
+        return $scheduleMenus;
     }
 }
