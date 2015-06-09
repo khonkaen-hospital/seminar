@@ -46,12 +46,23 @@ $this->params['breadcrumbs'][] = $this->title;
                   ],
               ]);;?>
 
-             		<?php Html::a('<i class="fa fa-edit"></i> กำหนดการ',['/schedule/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
-             		?>
+             		
+             		
                 </div>
              	<div class="col-md-3">
-             		<?= Html::a('<i class="fa fa-edit"></i> ตารางการนำเสนอ',['/research/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);
-             		?>
+              <?=  ButtonDropdown::widget([
+                  'options'=>['class'=>'btn btn-default btn-lg btn-block'],
+                  'label' => '<i class="fa fa-edit"></i> ตารางการนำเสนอ',
+                  'encodeLabel'=>false,
+                  'dropdown' => [
+                      'items' => [
+                          ['label' => 'จัดการข้อมูล', 'url' => ['/research/index','seminar_id'=>$model->id]],
+                          ['label' => 'อัพเดทข้อมูลห้องนำเสนอ', 'url' => ['/research/room-monitor','seminar_id'=>$model->id]],
+                          ['label' => 'แสดงหน้าจอทีวี', 'url' =>  ['/research/preview','seminar_id'=>$model->id]]
+                      ],
+                  ],
+              ]);;?>
+
                 </div>
              	<div class="col-md-3">
              		<?= Html::a('<i class="fa fa-edit"></i> ประเภทงานวิจัย',['/research-type/index','seminar_id'=>$model->id],['class'=>'btn btn-default btn-lg btn-block']);

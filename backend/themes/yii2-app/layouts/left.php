@@ -37,20 +37,20 @@ use yii\bootstrap\Nav;
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
                     ['label' => '<i class="fa fa-dashboard"></i> <span>ตั้งค่างานประชุม</span>', 'url' => ['/seminar/index']],
-                    '<li class="header">Menu Yii2</li>',
-                    ['label' => '<i class="fa fa-file-code-o"></i> <span>Gii</span>', 'url' => ['/gii']],
-                    ['label' => '<i class="fa fa-dashboard"></i> <span>Debug</span>', 'url' => ['/debug']],
-                    [
-                        'label' => '<i class="glyphicon glyphicon-lock"></i> Sing in', //for basic
-                        'url' => ['/site/login'],
-                        'visible' =>Yii::$app->user->isGuest
-                    ],
+                    // '<li class="header">Menu Yii2</li>',
+                    // ['label' => '<i class="fa fa-file-code-o"></i> <span>Gii</span>', 'url' => ['/gii']],
+                    // ['label' => '<i class="fa fa-dashboard"></i> <span>Debug</span>', 'url' => ['/debug']],
+                    // [
+                    //     'label' => '<i class="glyphicon glyphicon-lock"></i> Sing in', //for basic
+                    //     'url' => ['/site/login'],
+                    //     'visible' =>Yii::$app->user->isGuest
+                    // ],
                 ],
             ]
         );
         ?>
 
-        <ul class="sidebar-menu">
+<!--         <ul class="sidebar-menu">
             <li>
               <a href="pages/calendar.html">
                 <i class="fa fa-calendar"></i> <span>Calendar</span>
@@ -84,7 +84,7 @@ use yii\bootstrap\Nav;
                     </li>
                 </ul>
             </li>
-        </ul>
+        </ul> -->
 
     </section>
 

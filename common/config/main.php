@@ -4,7 +4,8 @@ return [
     'language'=>'th',
     'components' => [
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => 'yii\caching\ApcCache',
+            'keyPrefix' => 'seminar',      
         ],
     ],
     'modules' => [

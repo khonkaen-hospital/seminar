@@ -12,7 +12,9 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-
+use backend\models\Seminar;
+use backend\models\Schedule;
+use backend\models\Room;
 /**
  * Site controller
  */
@@ -166,6 +168,26 @@ class SiteController extends Controller
 
         return $this->render('resetPassword', [
             'model' => $model,
+        ]);
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Seminar::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionSchedule($seminar_id,$date=null){
+
+    
+        $model= Schedule::find()->bySeminar($seminar_id)->all();
+
+        return $this->render('schedule',[
+            'model' => $model,
+            'rooms' => Room::find()->all()
         ]);
     }
 }

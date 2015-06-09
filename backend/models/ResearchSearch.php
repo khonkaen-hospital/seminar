@@ -21,7 +21,7 @@ class ResearchSearch extends Research
     {
         return [
             [['id', 'research_type'], 'integer'],
-            [['number', 'topic', 'present_by', 'position', 'office', 'province_code','q'], 'safe'],
+            [['number', 'topic', 'present_by', 'position', 'office', 'province_code','q','room_id'], 'safe'],
         ];
     }
 
@@ -43,7 +43,12 @@ class ResearchSearch extends Research
      */
     public function search($params)
     {
-        $query = Research::find();
+        //$query = Research::find();
+
+        $query = Research::getDb()->cache(function ($db) {
+            return Research::find();
+        });
+
         $query->joinWith(['room']);
 
         $dataProvider = new ActiveDataProvider([
@@ -81,6 +86,7 @@ class ResearchSearch extends Research
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'room_id'=>$this->room_id,
             'research_type' => $this->research_type,
         ]);
 

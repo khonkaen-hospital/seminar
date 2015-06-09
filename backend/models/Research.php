@@ -44,7 +44,7 @@ class Research extends \yii\db\ActiveRecord
         return [
             [['start_date', 'end_date','topic','number'],'required'],
             [['seminar_id', 'research_type','room_id'], 'integer'],
-            [['start_date', 'end_date','seminar_id','room_id'], 'safe'],
+            [['start_date', 'end_date','real_start','real_end','seminar_id','room_id'], 'safe'],
             [['number'], 'string', 'max' => 10],
             [['topic', 'present_by','researcher'], 'string', 'max' => 255],
             [['position', 'office'], 'string', 'max' => 150],
@@ -61,6 +61,8 @@ class Research extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'start_date' => Yii::t('app', 'เวลาเริ่ม'),
             'end_date' => Yii::t('app', 'เวลาสิ้นสุด'),
+            'real_start' => Yii::t('app', 'เวลาเริ่มจริง'),
+            'real_end' => Yii::t('app', 'เวลาสิ้นสุดจริง'),
             'seminar_id' => Yii::t('app', 'Seminar ID'),
             'number' => Yii::t('app', 'รหัสผลงาน'),
             'topic' => Yii::t('app', 'ชื่อเรื่อง'),

@@ -3,11 +3,13 @@
 namespace backend\controllers;
 
 use Yii;
+use backend\models\Room;
 use backend\models\Research;
 use backend\models\ResearchSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\SqlDataProvider;
 
 /**
  * ResearchController implements the CRUD actions for Research model.
@@ -33,6 +35,19 @@ class ResearchController extends Controller
     public function actionIndex($seminar_id)
     {
          return $this->renderIndex($seminar_id);
+    }
+
+    public function actionRoomMonitor($seminar_id){
+        $searchModel = new ResearchSearch();
+        $searchModel->seminar_id = $seminar_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('room_monitor', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'seminar_id'=>$seminar_id
+        ]);
+       
     }
 
     /**
@@ -83,6 +98,26 @@ class ResearchController extends Controller
             return $this->redirect(['index', 'seminar_id' => $model->seminar_id]);
         } else {
             return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+
+    /**
+     * Updates an existing Research model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionMonitorUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['room-monitor                                                                           ', 'seminar_id' => $model->seminar_id]);
+        } else {
+            return $this->render('monitor-update', [
                 'model' => $model,
             ]);
         }
@@ -140,6 +175,82 @@ class ResearchController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'seminar_id'=>$seminar_id
+        ]);
+    }
+
+    public function actionStart($id){
+
+        Yii::$app->response->format = 'json';
+        $response = ['success'=>false];
+
+        if(Yii::$app->request->getIsAjax()){
+              $model = $this->findModel($id);
+              $status = Yii::$app->request->post('dataCheck');
+              $model->real_start = $status==0?NULL:date('Y-m-d H:i:s');
+              $model->save();
+              $response = ['success'=> $model->getErrors()];
+        }
+        return $response;
+
+    }
+    public function actionStop($id){
+
+        Yii::$app->response->format = 'json';
+        $response = ['success'=>false];
+
+        if(Yii::$app->request->getIsAjax()){
+              $model = $this->findModel($id);
+              $status = Yii::$app->request->post('dataCheck');
+              $model->real_end = $status==0?NULL:date('Y-m-d H:i:s');
+              $model->save();
+              $response = ['success'=>true];
+        }
+        return $response;
+    }
+
+    public function actionPreview($seminar_id,$date=null){
+
+        $this->layout ='main-login';
+        $model= Research::find()->bySeminar($seminar_id)->all();
+
+        $searchModel = new ResearchSearch();
+        $searchModel->seminar_id = $seminar_id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('preview',[
+            'searchModel' => $searchModel,
+            'dataProvider' => $this->getResearch(),
+            'seminar_id'=>$seminar_id,
+            'model' => $model,
+            'rooms' => Room::find()->all()
+        ]);
+    }
+
+
+    public function getResearch(){
+
+      $sql = "SELECT
+                room.room_name,
+                r.*
+            FROM
+                lib_room room
+            right JOIN (
+                SELECT
+                    *
+                FROM
+                    research
+                where !ISNULL(real_start) and ISNULL(real_end)
+            ) r ON r.room_id = room.id
+
+            group by r.room_id
+            ORDER BY room.room_name asc,r.start_date asc";
+
+        // $count = Yii::$app->db->createCommand('
+        //     SELECT COUNT(*) FROM user WHERE status=:status
+        // ', [':status' => 1])->queryScalar();
+
+        return  new SqlDataProvider([
+            'sql' => $sql,
         ]);
     }
 }
