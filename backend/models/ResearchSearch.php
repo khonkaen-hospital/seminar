@@ -21,7 +21,7 @@ class ResearchSearch extends Research
     {
         return [
             [['id', 'research_type'], 'integer'],
-            [['number', 'topic', 'present_by', 'position', 'office', 'province_code','q','room_id'], 'safe'],
+            [['number', 'topic', 'present_by', 'position', 'office', 'province_code','q','room_id','seminar_id'], 'safe'],
         ];
     }
 
@@ -87,7 +87,8 @@ class ResearchSearch extends Research
         $query->andFilterWhere([
             'id' => $this->id,
             'room_id'=>$this->room_id,
-            'research_type' => $this->research_type,
+            'research.seminar_id'=>$this->seminar_id,
+            //'seminar_id' => $this->seminar_id,
         ]);
 
         $query->andFilterWhere(['like', 'number', $this->number])

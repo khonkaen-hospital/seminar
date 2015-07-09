@@ -35,7 +35,7 @@ class RoomController extends Controller
     public function actionIndex($seminar_id)
     {
         $searchModel = new RoomSearch();
-        $searchModel->seminar_id = Room::STATUS_ACTIVE;
+        $searchModel->seminar_id = $seminar_id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
